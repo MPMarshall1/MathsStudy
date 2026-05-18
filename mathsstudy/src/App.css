@@ -1,0 +1,113 @@
+/* App.css */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* ensures the grid fits exactly */
+}
+
+.app-container {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "sidebar content"
+    "bottomnav bottomnav"; /* make bottomnav span full width */
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: 60px 1fr auto; /* let bottomnav size itself */
+  height: 100vh;
+  overflow: hidden; /* prevents scroll pushing nav out */
+  background-color: #3e3e3e;
+  color: white;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.header {
+  grid-area: header;
+  display: flex;
+  justify-content: flex-end; /* pushes content to the right */
+  align-items: center;
+  padding: 0 20px;
+  background-color: #2b2b2b; /* optional darker header */
+}
+
+.content {
+  grid-area: content;
+}
+
+.bottomnav {
+  grid-area: bottomnav;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  background-color: #1a1a1a;
+  border-top: 1px solid #333;
+  padding: 10px 0; /* use padding instead of fixed height */
+  box-sizing: border-box;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.bottomnav button {
+  background-color: #333;
+  color: white;
+  border: 2px solid #555;
+  padding: 8px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.bottomnav button.active {
+  background-color: #2ecc71;
+  border-color: #2ecc71;
+  color: black;
+}
+
+.logout-btn {
+  background: #ff4d4d;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  background: #993333;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: #2b2b2b;
+  padding: 20px;
+  color: white;
+  font-family: "Courier New", Courier, monospace !important;
+}
+
+/* Indentation for nested topics */
+.topic-level {
+  margin-left: 15px;
+}
+
+.subtopic-level {
+  margin-left: 30px;
+}
+
+/* Optional: spacing and visual hierarchy */
+.sidebar h3 {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
+.sidebar h4 {
+  font-size: 1.2rem;
+  margin-bottom: 6px;
+}
+
+.sidebar p {
+  font-size: 1rem;
+  margin: 4px 0;
+}

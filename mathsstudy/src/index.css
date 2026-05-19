@@ -7,12 +7,10 @@ body {
   color: white; /* optional for contrast */
 }
 
-/* Apply Courier New to everything */
 * {
   font-family: "Courier New", Courier, monospace !important;
 }
 
-/* Optional: style sidebar background */
 .sidebar {
   background-color: #2b2b2b;
   padding: 20px;

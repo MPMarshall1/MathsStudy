@@ -1,13 +1,37 @@
-export default function Sidebar() {
+export default function Sidebar({ topic, setTopic }) {
   return (
     <aside className="sidebar">
-      <h3>Maths</h3>
-      <div className="topic-level">
-        <h4>Nat 5</h4>
-        <div className="subtopic-level">
-          <p>Fractions</p>
-        </div>
+
+      <div className="subtopic-level">
+        <button
+          className={`sidebar-link ${topic === "fractions" ? "active" : ""}`}
+          onClick={() => setTopic("fractions")}
+        >
+          Fractions
+        </button>
+
+        <button
+          className={`sidebar-link ${topic === "rationalDenominator" ? "active" : ""}`}
+          onClick={() => setTopic("rationalDenominator")}
+        >
+          Rational Denominators
+        </button>
+
+        <button
+          className={`sidebar-link ${topic === "rootsNature" ? "active" : ""}`}
+          onClick={() => setTopic("rootsNature")}
+        >
+          Nature of Roots
+        </button>
+
+        <button
+          className={`sidebar-link ${topic === "lineFromDiagram" ? "active" : ""}`}
+          onClick={() => setTopic("lineFromDiagram")}
+        >
+          Line Equation from Diagram
+        </button>
       </div>
+      
     </aside>
   );
 }

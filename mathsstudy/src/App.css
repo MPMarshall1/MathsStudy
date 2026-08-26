@@ -1,10 +1,11 @@
-/* App.css */
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden; /* ensures the grid fits exactly */
+  overflow: hidden;
+  font-family: "Courier New", Courier, monospace;
+  background-color: #3e3e3e;
+  color: white;
 }
 
 .app-container {
@@ -13,13 +14,10 @@ body {
     "header header"
     "sidebar content";
   grid-template-columns: 240px 1fr;
-  grid-template-rows: 60px 1fr auto;
+  grid-template-rows: 60px 1fr;
   height: 100vh;
-  overflow: hidden;
-  background-color: #3e3e3e;
-  color: white;
-  font-family: "Courier New", Courier, monospace;
 }
+
 
 .header {
   grid-area: header;
@@ -49,19 +47,6 @@ body {
 .header-toggle button.active {
   background-color: #047269;
   border-color: #047269;
-  color: black;
-}
-
-.content {
-  grid-area: content;
-}
-
-.content-inner {
-  grid-area: content;
-  padding: 20px;
-  font-size: 20px;
-  text-align: center;
-  font-family: "Courier New", Courier, monospace;
   color: white;
 }
 
@@ -79,25 +64,14 @@ body {
   background: #993333;
 }
 
+
 .sidebar {
   grid-area: sidebar;
   background-color: #2b2b2b;
   padding: 20px;
-  color: white;
-  font-family: "Courier New", Courier, monospace !important;
 }
 
-
-/* Indentation for nested topics */
-.topic-level {
-  margin-left: 15px;
-}
-
-.subtopic-level {
-  margin-left: 30px;
-}
-
-/* Optional: spacing and visual hierarchy */
+/* Headings */
 .sidebar h3 {
   font-size: 1.4rem;
   margin-bottom: 8px;
@@ -108,7 +82,102 @@ body {
   margin-bottom: 6px;
 }
 
-.sidebar p {
+/* Text‑style buttons */
+.sidebar-link {
+  background: none;
+  border: none;
+  padding: 4px 0;
+  margin: 2px 0;
+  color: #ccc;
   font-size: 1rem;
-  margin: 4px 0;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.sidebar-link:hover {
+  color: white;
+}
+
+.sidebar-link.active {
+  color: #47e6d4;
+  font-weight: bold;
+}
+
+
+.content {
+  grid-area: content;
+}
+
+.content-inner {
+  padding: 20px;
+  font-size: 20px;
+  text-align: center;
+}
+
+
+.answer-input {
+  margin-top: 16px;
+  width: 200px;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 6px;
+  border: 2px solid #555;
+  background-color: #222;
+  color: white;
+  text-align: center;
+  outline: none;
+}
+
+.answer-input.neutral {
+  border-color: #555;
+}
+
+.answer-input.correct {
+  border-color: #2ecc71;
+}
+
+.answer-input.incorrect {
+  border-color: #e74c3c;
+}
+
+.show-answer-box {
+  margin: 10px auto 0 auto;
+  width: 200px;
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 2px solid #555;
+  background-color: #222;
+  color: #ccc;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Default text */
+.show-answer-box .default-text {
+  display: inline-block;
+  transition: opacity 0.2s ease;
+}
+
+/* Hidden answer text */
+.show-answer-box .answer-text {
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Swap text on hover */
+.show-answer-box:hover .default-text {
+  opacity: 0;
+}
+
+.show-answer-box:hover .answer-text {
+  opacity: 1;
+  color: #fff;
 }

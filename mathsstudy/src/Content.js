@@ -1,64 +1,99 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { MathJax } from "better-react-mathjax";
-import { getRandomQuestion, lessonLatex } from "./questions";
 
-export default function Content({ activePage }) {
-  const [question, setQuestion] = useState(getRandomQuestion());
+import * as Fractions from "./pages/fractionsMultiply";
+import * as RationalDenominator from "./pages/rationalDenominator";
+import * as RootsNature from "./pages/rootsNature";
+import * as LineFromDiagram from "./pages/lineFromDiagram";
+
+export default function Content({ topic, mode }) {
+  const topicModule =
+    topic === "fractions"
+      ? Fractions
+      : topic === "rationalDenominator"
+      ? RationalDenominator
+      : topic === "rootsNature"
+      ? RootsNature
+      : topic === "linesFromDiagram"
+      ? LineFromDiagram
+      : LineFromDiagram;
+
+  const [question, setQuestion] = useState(null);
   const [answer, setAnswer] = useState("");
   const [isCorrect, setIsCorrect] = useState(null);
 
-  // Only randomise when switching TO the questions page
   useEffect(() => {
-    if (activePage === "questions") {
-      setQuestion(getRandomQuestion());
+    async function loadQuestion() {
+      const q = await topicModule.getRandomQuestion();
+      setQuestion(q);
       setAnswer("");
       setIsCorrect(null);
     }
-  }, [activePage]);
+    loadQuestion();
+  }, [topic]);
 
-  function checkAnswer() {
-    const cleaned = answer.trim().replace(/\s+/g, "");
-    setIsCorrect(cleaned === question.answer);
-  }
+  // ❗ Hooks must run BEFORE any conditional return
+  const latex = mode === "lesson" ? topicModule.lessonLatex : question?.latex;
+  const renderedLatex = useMemo(() => latex, [latex]);
+
+  // ❗ Now it's safe to return early
+  if (!question) return <div>Loading…</div>;
 
   function handleKeyDown(e) {
     if (e.key === "Enter") checkAnswer();
   }
 
-  const latex = activePage === "lesson" ? lessonLatex : question.latex;
+  function checkAnswer() {
+    const correct = answer.trim() === question.answer.toString();
+    setIsCorrect(correct);
+  }
 
   return (
     <div className="content-inner">
-      <MathJax dynamic>{latex}</MathJax>
+      {mode === "lesson" && (
+        <MathJax dynamic>{renderedLatex}</MathJax>
+      )}
 
+      {mode === "questions" && (
+        <>
+          <div className="show-answer-box">
+            <span className="default-text">Show Answer</span>
+            <span className="answer-text">{question.answer}</span>
+          </div>
 
-      {activePage === "questions" && (
-        <input
-          type="text"
-          maxLength={6}
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="?"
-          style={{
-            marginTop: "16px",
-            width: "100px",
-            padding: "10px",
-            fontSize: "20px",
-            borderRadius: "6px",
-            border: "2px solid",
-            borderColor:
+          {question.diagram && (
+            <div
+              className="diagram"
+              dangerouslySetInnerHTML={{ __html: question.diagram }}
+            />
+          )}
+
+          <p style={{ fontSize: "22px", marginBottom: "10px" }}>
+            {question.instruction}
+          </p>
+
+          <MathJax dynamic>{renderedLatex}</MathJax>
+
+          <p style={{ fontSize: "12px", marginBottom: "10px" }}>
+            {question.postamble}
+          </p>
+
+          <input
+            type="text"
+            maxLength={100}
+            value={answer}
+            onChange={(e) => setAnswer(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="?"
+            className={`answer-input ${
               isCorrect === null
-                ? "#555"
+                ? "neutral"
                 : isCorrect
-                ? "#2ecc71"
-                : "#e74c3c",
-            backgroundColor: "#222",
-            color: "white",
-            textAlign: "center",
-            outline: "none"
-          }}
-        />
+                ? "correct"
+                : "incorrect"
+            }`}
+          />
+        </>
       )}
     </div>
   );

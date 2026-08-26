@@ -1,18 +1,17 @@
-// Header.js
-export default function Header({ activePage, setActivePage }) {
+export default function Header({ mode, setMode }) {
   return (
     <header className="header">
       <div className="header-toggle">
         <button
-          className={activePage === "questions" ? "active" : ""}
-          onClick={() => setActivePage("questions")}
+          className={mode === "questions" ? "active" : ""}
+          onClick={() => setMode("questions")}
         >
           Questions
         </button>
 
         <button
-          className={activePage === "lesson" ? "active" : ""}
-          onClick={() => setActivePage("lesson")}
+          className={mode === "lesson" ? "active" : ""}
+          onClick={() => setMode("lesson")}
         >
           Lesson
         </button>

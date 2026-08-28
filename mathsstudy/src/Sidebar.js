@@ -28,7 +28,28 @@ export default function Sidebar({ topic, setTopic }) {
           className={`sidebar-link ${topic === "lineFromDiagram" ? "active" : ""}`}
           onClick={() => setTopic("lineFromDiagram")}
         >
-          Line Equation from Diagram
+          Line Equation From Diagram
+        </button>
+
+        <button
+          className={`sidebar-link ${topic === "volumeOfSphere" ? "active" : ""}`}
+          onClick={() => setTopic("volumeOfSphere")}
+        >
+          Volume of Sphere
+        </button>
+
+        <button
+          className={`sidebar-link ${topic === "evaluateFunction" ? "active" : ""}`}
+          onClick={() => setTopic("evaluateFunction")}
+        >
+          Evaluate Functions
+        </button>
+
+                <button
+          className={`sidebar-link ${topic === "reverseFunction" ? "active" : ""}`}
+          onClick={() => setTopic("reverseFunction")}
+        >
+          Reverse Functions
         </button>
       </div>
       

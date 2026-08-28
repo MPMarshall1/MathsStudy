@@ -27,3 +27,12 @@ export function randNonZero(max) {
   while (x === 0) x = randTwoSide(max);
   return x;
 }
+
+export function toSignificantFigures(n, f) {
+  if (n === 0) return 0;
+  const d = Math.ceil(Math.log10(Math.abs(n)));
+  const power = f - d;
+  const magnitude = Math.pow(10, power);
+  const shifted = Math.round(n * magnitude);
+  return shifted / magnitude;
+}

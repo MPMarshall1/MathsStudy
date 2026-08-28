@@ -5,6 +5,9 @@ import * as Fractions from "./pages/fractionsMultiply";
 import * as RationalDenominator from "./pages/rationalDenominator";
 import * as RootsNature from "./pages/rootsNature";
 import * as LineFromDiagram from "./pages/lineFromDiagram";
+import * as VolumeOfSphere from "./pages/volumeOfSphere";
+import * as EvaluateFunction from "./pages/evaluateFunction";
+import * as ReverseFunction from "./pages/reverseFunction";
 
 export default function Content({ topic, mode }) {
   const topicModule =
@@ -16,6 +19,13 @@ export default function Content({ topic, mode }) {
       ? RootsNature
       : topic === "linesFromDiagram"
       ? LineFromDiagram
+      : topic === "volumeOfSphere"
+      ? VolumeOfSphere
+      : topic === "evaluateFunction"
+      ? EvaluateFunction
+      : topic === "reverseFunction"
+      ? ReverseFunction
+
       : LineFromDiagram;
 
   const [question, setQuestion] = useState(null);
@@ -32,11 +42,9 @@ export default function Content({ topic, mode }) {
     loadQuestion();
   }, [topic]);
 
-  // ❗ Hooks must run BEFORE any conditional return
   const latex = mode === "lesson" ? topicModule.lessonLatex : question?.latex;
   const renderedLatex = useMemo(() => latex, [latex]);
 
-  // ❗ Now it's safe to return early
   if (!question) return <div>Loading…</div>;
 
   function handleKeyDown(e) {

@@ -1,7 +1,19 @@
 import { randTwoSide } from "../utils";
 
 export const lessonLatex = `\\[
-\\text{Too schrimple.}
+\\text{We are looking for in the input value to the function which evaluates to a given answer.} \\\\ \\\\
+\\text{If we have the function} f(x)= 5x+7 \\\\ 
+\\text{and are looking for p where } f(p)=47 \\\\
+\\text{first translate the function from x to p.} \\\\
+f(x)= 5x+7 \\text{ ---> } f(p)= 5p+7 \\\\ \\\\
+\\text{Now, replace } f(p) \\text{ with the given value 47.} \\\\
+f(p) = 5p+7 \\\\
+47 = 5p+7 \\\\ \\\\
+\\text{Now solve the equation for p.} \\\\
+47 = 5p+7 \\\\
+5p+7 = 47 \\\\
+5p = 40 \\\\
+p = 8
 \\]`;
 
 export function getRandomQuestion() {

@@ -26,6 +26,7 @@ html, body {
   align-items: center;
   padding: 0 20px;
   background-color: #2b2b2b;
+  position: relative;
 }
 
 .header-toggle {
@@ -48,6 +49,10 @@ html, body {
   background-color: #047269;
   border-color: #047269;
   color: white;
+}
+
+.hamburger-btn {
+  display: none;
 }
 
 .logout-btn {
@@ -163,6 +168,10 @@ html, body {
   padding: 20px;
   font-size: 20px;
   text-align: center;
+  overflow-y: auto;
+  overflow-x: auto; 
+  height: 100%;    
+  padding: 0 20px;   
 }
 
 
@@ -230,4 +239,54 @@ html, body {
 .show-answer-box:hover .answer-text {
   opacity: 1;
   color: #fff;
+}
+
+@media (max-width: 767px) {
+  /* Collapse the grid: header on top, content full width */
+  .app-container {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "content";
+  }
+
+  /* Sidebar leaves the grid and becomes a slide-in panel */
+  .sidebar {
+    position: fixed;
+    top: 60px;                    /* below the header */
+    left: 0;
+    width: 240px;
+    height: calc(100% - 60px);
+    transform: translateX(-100%); /* hidden off-canvas */
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);     /* slides in */
+  }
+
+  /* Reveal the centered hamburger */
+  .hamburger-btn {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+  }
+
+  .hamburger-btn .bar {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    margin: 5px 0;
+    border-radius: 2px;
+  }
 }

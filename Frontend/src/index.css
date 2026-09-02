@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+  font-family: "Courier New", Courier, monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: black;
+  color: white; /* optional for contrast */
+}
+
+* {
+  font-family: "Courier New", Courier, monospace !important;
+}
+
+.sidebar {
+  background-color: #2b2b2b;
+  padding: 20px;
+}

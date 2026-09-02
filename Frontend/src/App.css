@@ -1,0 +1,303 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Courier New", Courier, monospace;
+  background-color: #3e3e3e;
+  color: white;
+}
+
+.app-container {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "sidebar content";
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: 60px 1fr;
+  height: 100vh;
+}
+
+
+.header {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background-color: #2b2b2b;
+  position: relative;
+}
+
+.header-toggle {
+  display: flex;
+  gap: 12px;
+}
+
+.header-toggle button {
+  background-color: #333;
+  color: white;
+  border: 2px solid #555;
+  padding: 6px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.header-toggle button.active {
+  background-color: #047269;
+  border-color: #047269;
+  color: white;
+}
+
+.hamburger-btn {
+  display: none;
+}
+
+.logout-btn {
+  background: #047269;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  background: #993333;
+}
+
+.header-right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.login-input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 18px;
+  border-radius: 6px;
+  border: 2px solid #555;
+  background-color: #222;
+  color: white;
+}
+
+.about-btn {
+  background: #047269;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease;
+}
+
+.about-btn:hover {
+  background: #555;
+}
+
+.about-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+/* Modal box */
+.about-content {
+  background: #2b2b2b;
+  padding: 24px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  color: white;
+  text-align: center;
+  border: 2px solid #047269;
+}
+
+.about-content a {
+  color: #47c9b3;      /* pick any colour you like */
+  text-decoration: underline;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: #2b2b2b;
+  padding: 20px;
+}
+
+/* Headings */
+.sidebar h3 {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
+.sidebar h4 {
+  font-size: 1.2rem;
+  margin-bottom: 6px;
+}
+
+/* Text‑style buttons */
+.sidebar-link {
+  background: none;
+  border: none;
+  padding: 4px 0;
+  margin: 2px 0;
+  color: #ccc;
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.sidebar-link:hover {
+  color: white;
+}
+
+.sidebar-link.active {
+  color: #47e6d4;
+  font-weight: bold;
+}
+
+
+.content {
+  grid-area: content;
+}
+
+.content-inner {
+  padding: 20px;
+  font-size: 20px;
+  text-align: center;
+  overflow-y: auto;
+  overflow-x: auto; 
+  height: 100%;    
+  padding: 0 20px;   
+}
+
+
+.answer-input {
+  margin-top: 16px;
+  width: 200px;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 6px;
+  border: 2px solid #555;
+  background-color: #222;
+  color: white;
+  text-align: center;
+  outline: none;
+}
+
+.answer-input.neutral {
+  border-color: #555;
+}
+
+.answer-input.correct {
+  border-color: #2ecc71;
+}
+
+.answer-input.incorrect {
+  border-color: #e74c3c;
+}
+
+.show-answer-box {
+  margin: 10px auto 0 auto;
+  width: 200px;
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 2px solid #555;
+  background-color: #222;
+  color: #ccc;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Default text */
+.show-answer-box .default-text {
+  display: inline-block;
+  transition: opacity 0.2s ease;
+}
+
+/* Hidden answer text */
+.show-answer-box .answer-text {
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Swap text on hover */
+.show-answer-box:hover .default-text {
+  opacity: 0;
+}
+
+.show-answer-box:hover .answer-text {
+  opacity: 1;
+  color: #fff;
+}
+
+@media (max-width: 767px) {
+  /* Collapse the grid: header on top, content full width */
+  .app-container {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "content";
+  }
+
+  /* Sidebar leaves the grid and becomes a slide-in panel */
+  .sidebar {
+    position: fixed;
+    top: 60px;                    /* below the header */
+    left: 0;
+    width: 240px;
+    height: calc(100% - 60px);
+    transform: translateX(-100%); /* hidden off-canvas */
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);     /* slides in */
+  }
+
+  /* Reveal the centered hamburger */
+  .hamburger-btn {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+  }
+
+  .hamburger-btn .bar {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    margin: 5px 0;
+    border-radius: 2px;
+  }
+}

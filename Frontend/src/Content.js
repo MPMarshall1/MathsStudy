@@ -9,7 +9,7 @@ import * as VolumeOfSphere from "./pages/volumeOfSphere";
 import * as EvaluateFunction from "./pages/evaluateFunction";
 import * as ReverseFunction from "./pages/reverseFunction";
 
-export default function Content({ topic, mode }) {
+export default function Content({ topic }) {
   const topicModule =
     topic === "fractions"
       ? Fractions
@@ -25,7 +25,6 @@ export default function Content({ topic, mode }) {
       ? EvaluateFunction
       : topic === "reverseFunction"
       ? ReverseFunction
-
       : LineFromDiagram;
 
   const [question, setQuestion] = useState(null);
@@ -42,7 +41,7 @@ export default function Content({ topic, mode }) {
     loadQuestion();
   }, [topic]);
 
-  const latex = mode === "lesson" ? topicModule.lessonLatex : question?.latex;
+  const latex = question?.latex;
   const renderedLatex = useMemo(() => latex, [latex]);
 
   if (!question) return <div>Loading…</div>;
@@ -58,51 +57,45 @@ export default function Content({ topic, mode }) {
 
   return (
     <div className="content-inner">
-      {mode === "lesson" && (
-        <MathJax dynamic>{renderedLatex}</MathJax>
-      )}
+      <>
+        <div className="show-answer-box">
+          <span className="default-text">Show Answer</span>
+          <span className="answer-text">{question.answer}</span>
+        </div>
 
-      {mode === "questions" && (
-        <>
-          <div className="show-answer-box">
-            <span className="default-text">Show Answer</span>
-            <span className="answer-text">{question.answer}</span>
-          </div>
-
-          {question.diagram && (
-            <div
-              className="diagram"
-              dangerouslySetInnerHTML={{ __html: question.diagram }}
-            />
-          )}
-
-          <p style={{ fontSize: "22px", marginBottom: "10px" }}>
-            {question.instruction}
-          </p>
-
-          <MathJax dynamic>{renderedLatex}</MathJax>
-
-          <p style={{ fontSize: "12px", marginBottom: "10px" }}>
-            {question.postamble}
-          </p>
-
-          <input
-            type="text"
-            maxLength={100}
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="?"
-            className={`answer-input ${
-              isCorrect === null
-                ? "neutral"
-                : isCorrect
-                ? "correct"
-                : "incorrect"
-            }`}
+        {question.diagram && (
+          <div
+            className="diagram"
+            dangerouslySetInnerHTML={{ __html: question.diagram }}
           />
-        </>
-      )}
+        )}
+
+        <p style={{ fontSize: "22px", marginBottom: "10px" }}>
+          {question.instruction}
+        </p>
+
+        <MathJax dynamic>{renderedLatex}</MathJax>
+
+        <p style={{ fontSize: "12px", marginBottom: "10px" }}>
+          {question.postamble}
+        </p>
+
+        <input
+          type="text"
+          maxLength={100}
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="?"
+          className={`answer-input ${
+            isCorrect === null
+              ? "neutral"
+              : isCorrect
+              ? "correct"
+              : "incorrect"
+          }`}
+        />
+      </>
     </div>
   );
 }

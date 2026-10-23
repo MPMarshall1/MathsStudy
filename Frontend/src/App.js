@@ -7,7 +7,6 @@ import "./App.css";
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [topic, setTopic] = useState("fractions");
-  const [mode, setMode] = useState("lesson");
   const [loggedIn, setLoggedIn] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
 
@@ -18,12 +17,25 @@ export default function App() {
   }, []);
 
   return (
-    <div className="app-container">
-      <Header mode={mode} setMode={setMode} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} loggedIn={loggedIn} setLoggedIn={setLoggedIn} showLogin={showLogin} setShowLogin={setShowLogin}/>
+      <div className="app-container">
+        <Header 
+          mobileMenuOpen={mobileMenuOpen} 
+          setMobileMenuOpen={setMobileMenuOpen} 
+          loggedIn={loggedIn} 
+          setLoggedIn={setLoggedIn} 
+          showLogin={showLogin} 
+          setShowLogin={setShowLogin}
+        />
 
-      <Sidebar topic={topic} setTopic={setTopic} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
-
-      <Content topic={topic} mode={mode} />
+        <Sidebar 
+          topic={topic} 
+          setTopic={setTopic} 
+          mobileMenuOpen={mobileMenuOpen} 
+          setMobileMenuOpen={setMobileMenuOpen} 
+        />
+        
+        <Content topic={topic} />
     </div>
+
   );
 }

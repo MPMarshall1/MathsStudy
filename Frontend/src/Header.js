@@ -1,37 +1,35 @@
 import { useState } from "react";
 
-export default function Header({ mode, setMode, mobileMenuOpen, setMobileMenuOpen, loggedIn, setLoggedIn, showLogin, setShowLogin }) {
+export default function Header({ mobileMenuOpen, setMobileMenuOpen, loggedIn, setLoggedIn, showLogin, setShowLogin }) {
   const [showAbout, setShowAbout] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLogin = () => {
+    // Placeholder logic since backend isn't provided
+    if (email && password) {
+      localStorage.setItem("session", "active");
+      setShowLogin(false);
+      // In a real app, you would verify with SQL here
+      window.location.reload(); 
+    } else {
+      setError("Please enter email and password");
+    }
+  };
 
   return (
     <header className="header">
-
-      {/* Desktop mode toggle */}
-      <div className="header-toggle">
-        <button
-          className={mode === "questions" ? "active" : ""}
-          onClick={() => setMode("questions")}
-        >
-          Questions
-        </button>
-
-        <button
-          className={mode === "lesson" ? "active" : ""}
-          onClick={() => setMode("lesson")}
-        >
-          Lesson
-        </button>
-      </div>
-
-      {/* Mobile hamburger */}
       <button
         className="hamburger-btn"
         onClick={() => setMobileMenuOpen(true)}
       >
-        ☰
+        <span className="bar"></span>
+        <span className="bar"></span>
+        <span className="bar"></span>
       </button>
 
-      {/* Mobile sidebar drawer */}
       {mobileMenuOpen && (
         <div
           className="sidebar"
@@ -41,12 +39,10 @@ export default function Header({ mode, setMode, mobileMenuOpen, setMobileMenuOpe
             className="sidebar"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Sidebar content will be injected from Sidebar.js */}
           </div>
         </div>
       )}
 
-      {/* Right side buttons */}
       <div className="header-right">
         <button className="about-btn" onClick={() => setShowAbout(true)}>
           About
@@ -66,14 +62,13 @@ export default function Header({ mode, setMode, mobileMenuOpen, setMobileMenuOpe
         )}
       </div>
 
-      {/* About modal */}
       {showAbout && (
         <div className="about-modal" onClick={() => setShowAbout(false)}>
           <div className="about-content" onClick={(e) => e.stopPropagation()}>
             <h2>About</h2>
             <p>Hello! My name is Michael and I am a student at the University of Edinburgh.</p>
             <br />
-            <p>This website is a little tool to help you study. It’s motivated by the fact that there are only so many past papers but most such questions can be procedurally generated.</p>
+            <p>This website is a little tool to help you study. It's motivated by the fact that there are only so many past papers but most such questions can be procedurally generated.</p>
             <br />
             <p>You can reach me at s2662956@ed.ac.uk</p>
             <br />
@@ -86,7 +81,6 @@ export default function Header({ mode, setMode, mobileMenuOpen, setMobileMenuOpe
         <div className="about-modal" onClick={() => setShowLogin(false)}>
           <div className="about-content" onClick={(e) => e.stopPropagation()}>
             <h2>Log In</h2>
-
             <input
               type="email"
               placeholder="Email"
@@ -94,7 +88,6 @@ export default function Header({ mode, setMode, mobileMenuOpen, setMobileMenuOpe
               onChange={(e) => setEmail(e.target.value)}
               className="login-input"
             />
-
             <input
               type="password"
               placeholder="Password"
@@ -102,15 +95,13 @@ export default function Header({ mode, setMode, mobileMenuOpen, setMobileMenuOpe
               onChange={(e) => setPassword(e.target.value)}
               className="login-input"
             />
-
             <button
               className="about-btn"
               onClick={handleLogin}
             >
               Submit
             </button>
-
-            {error && <p className="login-error">{error}</p>}
+            {error && <p className="login-error" style={{color: '#e74c3c'}}>{error}</p>}
           </div>
         </div>
       )}

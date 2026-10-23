@@ -25,7 +25,7 @@ export default function Header({ mode, setMode, mobileMenuOpen, setMobileMenuOpe
 
       {/* Mobile hamburger */}
       <button
-        className="mobile-menu-btn"
+        className="hamburger-btn"
         onClick={() => setMobileMenuOpen(true)}
       >
         ☰
@@ -34,11 +34,11 @@ export default function Header({ mode, setMode, mobileMenuOpen, setMobileMenuOpe
       {/* Mobile sidebar drawer */}
       {mobileMenuOpen && (
         <div
-          className="mobile-sidebar-overlay"
+          className="sidebar"
           onClick={() => setMobileMenuOpen(false)}
         >
           <div
-            className="mobile-sidebar"
+            className="sidebar"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Sidebar content will be injected from Sidebar.js */}

@@ -2,52 +2,55 @@ import { useState } from "react";
 
 export default function Header({ mobileMenuOpen, setMobileMenuOpen, loggedIn, setLoggedIn, showLogin, setShowLogin }) {
   const [showAbout, setShowAbout] = useState(false);
-
+  
+  // State for Login Form
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleLogin = () => {
-    // Placeholder logic since backend isn't provided
+    // Simple mock login logic
     if (email && password) {
       localStorage.setItem("session", "active");
+      setLoggedIn(true);
       setShowLogin(false);
-      // In a real app, you would verify with SQL here
-      window.location.reload(); 
+      setEmail("");
+      setPassword("");
+      setError("");
     } else {
-      setError("Please enter email and password");
+      setError("Please enter both email and password.");
     }
   };
 
   return (
     <header className="header">
+
+      {/* LEFT SIDE: Contains the About Button */}
+      <div className="header-toggle" style={{ alignItems: 'center' }}>
+        <button className="about-btn" onClick={() => setShowAbout(true)}>
+          About
+        </button>
+      </div>
+
+      {/* Mobile hamburger button */}
       <button
         className="hamburger-btn"
         onClick={() => setMobileMenuOpen(true)}
+        aria-label="Open menu"
       >
         <span className="bar"></span>
         <span className="bar"></span>
         <span className="bar"></span>
       </button>
 
-      {mobileMenuOpen && (
-        <div
-          className="sidebar"
-          onClick={() => setMobileMenuOpen(false)}
-        >
-          <div
-            className="sidebar"
-            onClick={(e) => e.stopPropagation()}
-          >
-          </div>
-        </div>
-      )}
+      {/* 
+         NOTE: The mobile sidebar overlay and content are now rendered 
+         inside Sidebar.js to handle the "click-away-to-close" logic cleanly.
+         We removed the duplicate drawer code from here.
+      */}
 
+      {/* RIGHT SIDE: Login/Logout Buttons */}
       <div className="header-right">
-        <button className="about-btn" onClick={() => setShowAbout(true)}>
-          About
-        </button>
-
         {loggedIn ? (
           <button className="logout-btn" onClick={() => {
             localStorage.removeItem("session");
@@ -62,6 +65,7 @@ export default function Header({ mobileMenuOpen, setMobileMenuOpen, loggedIn, se
         )}
       </div>
 
+      {/* About Modal */}
       {showAbout && (
         <div className="about-modal" onClick={() => setShowAbout(false)}>
           <div className="about-content" onClick={(e) => e.stopPropagation()}>
@@ -77,10 +81,12 @@ export default function Header({ mobileMenuOpen, setMobileMenuOpen, loggedIn, se
         </div>
       )}
 
+      {/* Login Modal */}
       {showLogin && (
         <div className="about-modal" onClick={() => setShowLogin(false)}>
           <div className="about-content" onClick={(e) => e.stopPropagation()}>
             <h2>Log In</h2>
+            
             <input
               type="email"
               placeholder="Email"
@@ -88,6 +94,7 @@ export default function Header({ mobileMenuOpen, setMobileMenuOpen, loggedIn, se
               onChange={(e) => setEmail(e.target.value)}
               className="login-input"
             />
+
             <input
               type="password"
               placeholder="Password"
@@ -95,13 +102,20 @@ export default function Header({ mobileMenuOpen, setMobileMenuOpen, loggedIn, se
               onChange={(e) => setPassword(e.target.value)}
               className="login-input"
             />
+
             <button
               className="about-btn"
               onClick={handleLogin}
+              style={{ width: '100%', marginTop: '10px' }}
             >
               Submit
             </button>
-            {error && <p className="login-error" style={{color: '#e74c3c'}}>{error}</p>}
+
+            {error && (
+              <p style={{ color: '#e74c3c', marginTop: '10px', fontSize: '14px' }}>
+                {error}
+              </p>
+            )}
           </div>
         </div>
       )}

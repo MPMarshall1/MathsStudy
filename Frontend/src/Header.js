@@ -138,8 +138,6 @@ export default function Header({ mobileMenuOpen, setMobileMenuOpen, loggedIn, se
       {showLogin && (
         <div className="about-modal" onClick={() => setShowLogin(false)}>
           <div className="about-content" onClick={(e) => e.stopPropagation()}>
-            
-            <h3 style={{marginTop: 0}}>Student Login</h3>
 
             <input
               type="email"
@@ -179,10 +177,6 @@ export default function Header({ mobileMenuOpen, setMobileMenuOpen, loggedIn, se
                 {error}
               </p>
             )}
-            
-            <p style={{fontSize: '12px', color: '#ccc', marginTop: '15px'}}>
-              New users are automatically registered upon first login.
-            </p>
           </div>
         </div>
       )}

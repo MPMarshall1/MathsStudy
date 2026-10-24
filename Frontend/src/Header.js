@@ -1,25 +1,76 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Header({ mobileMenuOpen, setMobileMenuOpen, loggedIn, setLoggedIn, showLogin, setShowLogin }) {
   const [showAbout, setShowAbout] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
   
-  // State for Login Form
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = () => {
-    // Simple mock login logic
-    if (email && password) {
-      localStorage.setItem("session", "active");
+  useEffect(() => {
+    if (loggedIn) {
+      const storedEmail = localStorage.getItem("userEmail");
+      if (storedEmail) {
+        setUserEmail(storedEmail);
+      }
+    } else {
+      setUserEmail("");
+    }
+  }, [loggedIn]);
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      setError("Please enter both email and password.");
+      return;
+    }
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const hostname = window.location.hostname;
+      const baseUrl = hostname === 'localhost' ? 'http://localhost:4000' : `https://${hostname}:4000`;
+      const apiUrl = `${baseUrl}/api/auth`;
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Login failed");
+      }
+
+      localStorage.setItem("session", data.token);
+      localStorage.setItem("userEmail", data.email);
+      
+      setUserEmail(data.email);
       setLoggedIn(true);
       setShowLogin(false);
+      
       setEmail("");
       setPassword("");
-      setError("");
-    } else {
-      setError("Please enter both email and password.");
+      
+    } catch (err) {
+      console.error("Login error:", err);
+      setError(err.message || "Could not connect to authentication server.");
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("session");
+    localStorage.removeItem("userEmail");
+    setUserEmail("");
+    setLoggedIn(false);
   };
 
   return (
@@ -43,19 +94,21 @@ export default function Header({ mobileMenuOpen, setMobileMenuOpen, loggedIn, se
         <span className="bar"></span>
       </button>
 
-      {/* 
-         NOTE: The mobile sidebar overlay and content are now rendered 
-         inside Sidebar.js to handle the "click-away-to-close" logic cleanly.
-         We removed the duplicate drawer code from here.
-      */}
-
-      {/* RIGHT SIDE: Login/Logout Buttons */}
+      {/* RIGHT SIDE: Email Display + Login/Logout Buttons */}
       <div className="header-right">
-        {loggedIn ? (
-          <button className="logout-btn" onClick={() => {
-            localStorage.removeItem("session");
-            setLoggedIn(false);
+        {loggedIn && userEmail && (
+          <span style={{ 
+            marginRight: '12px', 
+            fontSize: '14px', 
+            color: '#47c9b3',
+            fontWeight: 'bold'
           }}>
+            {userEmail}
+          </span>
+        )}
+        
+        {loggedIn ? (
+          <button className="logout-btn" onClick={handleLogout}>
             Log out
           </button>
         ) : (
@@ -85,14 +138,16 @@ export default function Header({ mobileMenuOpen, setMobileMenuOpen, loggedIn, se
       {showLogin && (
         <div className="about-modal" onClick={() => setShowLogin(false)}>
           <div className="about-content" onClick={(e) => e.stopPropagation()}>
-            <h2>Log In</h2>
             
+            <h3 style={{marginTop: 0}}>Student Login</h3>
+
             <input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="login-input"
+              disabled={isLoading}
             />
 
             <input
@@ -101,21 +156,33 @@ export default function Header({ mobileMenuOpen, setMobileMenuOpen, loggedIn, se
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="login-input"
+              disabled={isLoading}
+              onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
             />
 
             <button
               className="about-btn"
               onClick={handleLogin}
-              style={{ width: '100%', marginTop: '10px' }}
+              disabled={isLoading}
+              style={{ 
+                width: '100%', 
+                marginTop: '10px',
+                opacity: isLoading ? 0.7 : 1,
+                cursor: isLoading ? 'not-allowed' : 'pointer'
+              }}
             >
-              Submit
+              {isLoading ? "Processing..." : "Submit"}
             </button>
 
             {error && (
-              <p style={{ color: '#e74c3c', marginTop: '10px', fontSize: '14px' }}>
+              <p style={{ color: '#e74c3c', marginTop: '10px', fontSize: '14px', textAlign: 'center' }}>
                 {error}
               </p>
             )}
+            
+            <p style={{fontSize: '12px', color: '#ccc', marginTop: '15px'}}>
+              New users are automatically registered upon first login.
+            </p>
           </div>
         </div>
       )}

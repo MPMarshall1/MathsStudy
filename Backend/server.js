@@ -3,11 +3,18 @@ import mysql from "mysql2/promise";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cors from "cors";
+import https from "https";
+import fs from "fs";
 import "dotenv/config";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const options = {
+  key: fs.readFileSync('/path/to/your/private.key'), 
+  cert: fs.readFileSync('/path/to/your/certificate.crt')
+};
 
 const db = await mysql.createPool({
   host: process.env.DB_HOST,
@@ -53,4 +60,6 @@ app.post("/api/auth", async (req, res) => {
   res.json({ token, email: user.email });
 });
 
-app.listen(4000, () => console.log("Auth server on :4000"));
+https.createServer(options, app).listen(4000, () => {
+  console.log("Secure Auth server on :4000 (HTTPS)");
+});
